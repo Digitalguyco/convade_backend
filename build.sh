@@ -3,7 +3,7 @@
 set -o errexit
 
 # Install dependencies
-pip install -r convade_backend/requirements.txt
+pip install -r requirements.txt
 
 # Install additional production dependencies
 pip install gunicorn psycopg2-binary whitenoise
@@ -12,7 +12,6 @@ pip install gunicorn psycopg2-binary whitenoise
 export DJANGO_SETTINGS_MODULE=convade_backend.settings.production
 
 # Collect static files
-cd convade_backend
 python manage.py collectstatic --noinput
 
 # Run migrations
