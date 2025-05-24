@@ -5,7 +5,7 @@ services:
     env: python
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn convade_backend.wsgi:application"
+    startCommand: "cd convade_backend && gunicorn convade_backend.wsgi:application"
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
