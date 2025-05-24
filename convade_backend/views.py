@@ -10,7 +10,7 @@ def documentation_index(request):
     """Serve the main documentation index page."""
     try:
         # Path to the index.html file in the project root
-        doc_path = os.path.join(settings.BASE_DIR.parent, 'index.html')
+        doc_path = os.path.join(settings.BASE_DIR, 'index.html')
         
         with open(doc_path, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -33,7 +33,7 @@ def api_documentation(request):
     """Serve the comprehensive API documentation page."""
     try:
         # Path to the API_DOCUMENTATION.html file in the project root
-        doc_path = os.path.join(settings.BASE_DIR.parent, 'API_DOCUMENTATION.html')
+        doc_path = os.path.join(settings.BASE_DIR, 'API_DOCUMENTATION.html')
         
         with open(doc_path, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -57,7 +57,7 @@ def documentation_readme(request):
     """Serve the README documentation as HTML."""
     try:
         # Path to the README_API_DOCS.md file in the project root
-        readme_path = os.path.join(settings.BASE_DIR.parent, 'README_API_DOCS.md')
+        readme_path = os.path.join(settings.BASE_DIR, 'README_API_DOCS.md')
         
         with open(readme_path, 'r', encoding='utf-8') as f:
             content = f.read()
