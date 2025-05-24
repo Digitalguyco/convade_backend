@@ -11,13 +11,8 @@ DEBUG = False
 
 # Hosts
 ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '.render.com',
-    '.railway.app', 
-    '.fly.dev',
-    '.vercel.app',
-    '.herokuapp.com',
+    'convade-lms.onrender.com',
+    'api.convade.org',
 ]
 
 # Database
