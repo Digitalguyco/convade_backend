@@ -1,0 +1,67 @@
+# Core Django
+Django==5.2.1
+djangorestframework==3.15.2
+django-cors-headers==4.3.1
+
+# Database
+psycopg2-binary==2.9.9
+dj-database-url==2.2.0
+
+# Authentication & Authorization
+djangorestframework-simplejwt==5.3.0
+django-allauth==0.63.3
+social-auth-app-django==5.4.1
+
+# API Documentation
+drf-spectacular==0.27.2
+
+# Caching & Performance
+django-redis==5.4.0
+redis==5.0.7
+hiredis==2.3.2
+
+# Task Queue
+celery==5.3.4
+
+# File Handling & Storage
+Pillow==10.4.0
+django-storages==1.14.4
+boto3==1.34.131
+
+# Monitoring & Logging
+sentry-sdk==2.8.0
+
+# Production Server
+gunicorn==22.0.0
+whitenoise==6.7.0
+
+# Utilities
+python-decouple==3.8
+django-extensions==3.2.3
+pytz==2024.1
+
+# Development & Testing
+pytest==8.2.2
+pytest-django==4.8.0
+factory-boy==3.3.0
+coverage==7.5.4
+
+# Security
+django-ratelimit==4.1.0
+cryptography==42.0.8
+
+# Additional Dependencies for OpenAPI
+PyYAML==6.0.2
+uritemplate==4.1.1
+jsonschema==4.23.0
+inflection==0.5.1
+
+# Optional (commented out for now)
+# redis==5.2.1                    # For caching and sessions
+# celery==5.4.0                   # For background tasks
+# django-celery-beat==2.7.0       # For scheduled tasks
+# channels==4.2.0                 # For WebSocket support
+# django-import-export==4.2.0     # For data import/export
+
+# Development and Testing
+requests==2.32.3 

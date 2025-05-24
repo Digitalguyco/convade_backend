@@ -1,0 +1,1780 @@
+openapi: 3.0.3
+info:
+  title: Convade LMS API
+  version: 1.0.0
+  description: A comprehensive Learning Management System API
+paths:
+  /api/accounts/auth/register/:
+    post:
+      operationId: accounts_auth_register_create
+      description: Create a new user account with email and password.
+      summary: Register a new user
+      tags:
+      - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UserRegistrationRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegistration'
+          description: ''
+  /api/accounts/auth/login/:
+    post:
+      operationId: accounts_auth_login_create
+      description: Authenticate user with email and password.
+      summary: User login
+      tags:
+      - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/auth/logout/:
+    post:
+      operationId: accounts_auth_logout_create
+      description: Logout user and invalidate refresh token.
+      summary: User logout
+      tags:
+      - Authentication
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/auth/change-password/:
+    put:
+      operationId: accounts_auth_change_password_update
+      description: Change user password endpoint.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+    patch:
+      operationId: accounts_auth_change_password_partial_update
+      description: Change user password endpoint.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedChangePasswordRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PatchedChangePasswordRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/users/:
+    get:
+      operationId: accounts_users_list
+      description: List users endpoint.
+      summary: List users
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+  /api/accounts/users/{id}/:
+    get:
+      operationId: accounts_users_retrieve
+      description: User detail, update, delete endpoint.
+      summary: Get user details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+    put:
+      operationId: accounts_users_update
+      description: User detail, update, delete endpoint.
+      summary: Update user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDetailRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UserDetailRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+    patch:
+      operationId: accounts_users_partial_update
+      description: User detail, update, delete endpoint.
+      summary: Partially update user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+    delete:
+      operationId: accounts_users_destroy
+      description: User detail, update, delete endpoint.
+      summary: Delete user
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Users
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/accounts/profile/:
+    get:
+      operationId: accounts_profile_retrieve
+      description: User profile management endpoint.
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+    put:
+      operationId: accounts_profile_update
+      description: User profile management endpoint.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDetailRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UserDetailRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+    patch:
+      operationId: accounts_profile_partial_update
+      description: User profile management endpoint.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PatchedUserDetailRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+  /api/accounts/profile/details/:
+    get:
+      operationId: accounts_profile_details_retrieve
+      description: User profile details endpoint.
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+    put:
+      operationId: accounts_profile_details_update
+      description: User profile details endpoint.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfileRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UserProfileRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+    patch:
+      operationId: accounts_profile_details_partial_update
+      description: User profile details endpoint.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfileRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfileRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PatchedUserProfileRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+  /api/accounts/profile/current/:
+    get:
+      operationId: accounts_profile_current_retrieve
+      description: Get current user information.
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/schools/:
+    get:
+      operationId: accounts_schools_list
+      description: List and create schools endpoint.
+      summary: List schools
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - Schools
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSchoolList'
+          description: ''
+    post:
+      operationId: accounts_schools_create
+      description: List and create schools endpoint.
+      summary: Create school
+      tags:
+      - Schools
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchoolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SchoolRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SchoolRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+          description: ''
+  /api/accounts/schools/{id}/:
+    get:
+      operationId: accounts_schools_retrieve
+      description: School detail, update, delete endpoint.
+      summary: Get school details
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Schools
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+          description: ''
+    put:
+      operationId: accounts_schools_update
+      description: School detail, update, delete endpoint.
+      summary: Update school
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Schools
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SchoolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SchoolRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SchoolRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+          description: ''
+    patch:
+      operationId: accounts_schools_partial_update
+      description: School detail, update, delete endpoint.
+      summary: Partially update school
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Schools
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSchoolRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSchoolRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/PatchedSchoolRequest'
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/School'
+          description: ''
+    delete:
+      operationId: accounts_schools_destroy
+      description: School detail, update, delete endpoint.
+      summary: Delete school
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - Schools
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/accounts/sessions/:
+    get:
+      operationId: accounts_sessions_list
+      description: User sessions management endpoint.
+      parameters:
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserSessionList'
+          description: ''
+  /api/accounts/sessions/{session_id}/deactivate/:
+    post:
+      operationId: accounts_sessions_deactivate_create
+      description: Deactivate a specific user session.
+      parameters:
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - accounts
+      security:
+      - jwtAuth: []
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/accounts/login/:
+    post:
+      operationId: accounts_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TokenObtainPairRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/accounts/refresh/:
+    post:
+      operationId: accounts_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/accounts/verify/:
+    post:
+      operationId: accounts_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+      - accounts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TokenVerifyRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    BlankEnum:
+      enum:
+      - ''
+    ChangePasswordRequest:
+      type: object
+      description: Serializer for changing password.
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        new_password_confirm:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - new_password
+      - new_password_confirm
+      - old_password
+    LoginRequest:
+      type: object
+      description: Serializer for user login.
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    NullEnum:
+      enum:
+      - null
+    PaginatedSchoolList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/School'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PaginatedUserSessionList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSession'
+    PatchedChangePasswordRequest:
+      type: object
+      description: Serializer for changing password.
+      properties:
+        old_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        new_password_confirm:
+          type: string
+          writeOnly: true
+          minLength: 1
+    PatchedSchoolRequest:
+      type: object
+      description: Serializer for School model.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        address:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+          maxLength: 100
+        state:
+          type: string
+          minLength: 1
+          maxLength: 100
+        country:
+          type: string
+          minLength: 1
+          maxLength: 100
+        postal_code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        established_date:
+          type: string
+          format: date
+          nullable: true
+        school_type:
+          $ref: '#/components/schemas/SchoolTypeEnum'
+        timezone:
+          type: string
+          minLength: 1
+          maxLength: 50
+        academic_year_start:
+          type: string
+          format: date
+        academic_year_end:
+          type: string
+          format: date
+    PatchedUserDetailRequest:
+      type: object
+      description: Detailed serializer for User model with additional information.
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        school_id:
+          type: string
+          nullable: true
+          pattern: ^[A-Z0-9]{4,20}$
+          maxLength: 20
+        grade_level:
+          type: string
+          nullable: true
+          maxLength: 20
+        department:
+          type: string
+          nullable: true
+          maxLength: 100
+        is_active:
+          type: boolean
+        is_email_verified:
+          type: boolean
+    PatchedUserProfileRequest:
+      type: object
+      description: Serializer for UserProfile model.
+      properties:
+        user:
+          type: string
+          format: uuid
+        school:
+          type: string
+          format: uuid
+          nullable: true
+        student_id:
+          type: string
+          nullable: true
+          maxLength: 20
+        enrollment_date:
+          type: string
+          format: date
+          nullable: true
+        graduation_date:
+          type: string
+          format: date
+          nullable: true
+        employee_id:
+          type: string
+          nullable: true
+          maxLength: 20
+        hire_date:
+          type: string
+          format: date
+          nullable: true
+        subjects: {}
+        qualifications:
+          type: string
+          nullable: true
+        current_year:
+          type: string
+          nullable: true
+          maxLength: 20
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          nullable: true
+        emergency_contact_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        emergency_contact_phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        emergency_contact_relationship:
+          type: string
+          nullable: true
+          maxLength: 50
+        preferred_learning_style:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PreferredLearningStyleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        twitter_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+    PreferredLearningStyleEnum:
+      enum:
+      - visual
+      - auditory
+      - kinesthetic
+      - reading
+      type: string
+      description: |-
+        * `visual` - Visual
+        * `auditory` - Auditory
+        * `kinesthetic` - Kinesthetic
+        * `reading` - Reading/Writing
+    RoleEnum:
+      enum:
+      - student
+      - teacher
+      - admin
+      type: string
+      description: |-
+        * `student` - Student
+        * `teacher` - Teacher
+        * `admin` - Admin
+    School:
+      type: object
+      description: Serializer for School model.
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        code:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        country:
+          type: string
+          maxLength: 100
+        postal_code:
+          type: string
+          maxLength: 20
+        phone:
+          type: string
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        established_date:
+          type: string
+          format: date
+          nullable: true
+        school_type:
+          $ref: '#/components/schemas/SchoolTypeEnum'
+        timezone:
+          type: string
+          maxLength: 50
+        academic_year_start:
+          type: string
+          format: date
+        academic_year_end:
+          type: string
+          format: date
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - academic_year_end
+      - academic_year_start
+      - address
+      - city
+      - code
+      - country
+      - created_at
+      - email
+      - id
+      - name
+      - phone
+      - postal_code
+      - state
+      - updated_at
+    SchoolRequest:
+      type: object
+      description: Serializer for School model.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        address:
+          type: string
+          minLength: 1
+        city:
+          type: string
+          minLength: 1
+          maxLength: 100
+        state:
+          type: string
+          minLength: 1
+          maxLength: 100
+        country:
+          type: string
+          minLength: 1
+          maxLength: 100
+        postal_code:
+          type: string
+          minLength: 1
+          maxLength: 20
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        established_date:
+          type: string
+          format: date
+          nullable: true
+        school_type:
+          $ref: '#/components/schemas/SchoolTypeEnum'
+        timezone:
+          type: string
+          minLength: 1
+          maxLength: 50
+        academic_year_start:
+          type: string
+          format: date
+        academic_year_end:
+          type: string
+          format: date
+      required:
+      - academic_year_end
+      - academic_year_start
+      - address
+      - city
+      - code
+      - country
+      - email
+      - name
+      - phone
+      - postal_code
+      - state
+    SchoolTypeEnum:
+      enum:
+      - public
+      - private
+      - charter
+      - international
+      type: string
+      description: |-
+        * `public` - Public
+        * `private` - Private
+        * `charter` - Charter
+        * `international` - International
+    TokenObtainPair:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - refresh
+    TokenObtainPairRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    TokenVerifyRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - token
+    User:
+      type: object
+      description: Serializer for User model with profile information.
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        full_name:
+          type: string
+          readOnly: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        school_id:
+          type: string
+          nullable: true
+          pattern: ^[A-Z0-9]{4,20}$
+          maxLength: 20
+        grade_level:
+          type: string
+          nullable: true
+          maxLength: 20
+        department:
+          type: string
+          nullable: true
+          maxLength: 100
+        is_active:
+          type: boolean
+        is_email_verified:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        profile:
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+          readOnly: true
+      required:
+      - date_joined
+      - email
+      - first_name
+      - full_name
+      - id
+      - last_login
+      - last_name
+      - profile
+    UserDetail:
+      type: object
+      description: Detailed serializer for User model with additional information.
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        full_name:
+          type: string
+          readOnly: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        school_id:
+          type: string
+          nullable: true
+          pattern: ^[A-Z0-9]{4,20}$
+          maxLength: 20
+        grade_level:
+          type: string
+          nullable: true
+          maxLength: 20
+        department:
+          type: string
+          nullable: true
+          maxLength: 100
+        is_active:
+          type: boolean
+        is_email_verified:
+          type: boolean
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        profile:
+          allOf:
+          - $ref: '#/components/schemas/UserProfile'
+          readOnly: true
+        sessions:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserSession'
+          readOnly: true
+        total_courses:
+          type: string
+          readOnly: true
+        completed_courses:
+          type: string
+          readOnly: true
+      required:
+      - completed_courses
+      - date_joined
+      - email
+      - first_name
+      - full_name
+      - id
+      - last_login
+      - last_name
+      - profile
+      - sessions
+      - total_courses
+    UserDetailRequest:
+      type: object
+      description: Detailed serializer for User model with additional information.
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        school_id:
+          type: string
+          nullable: true
+          pattern: ^[A-Z0-9]{4,20}$
+          maxLength: 20
+        grade_level:
+          type: string
+          nullable: true
+          maxLength: 20
+        department:
+          type: string
+          nullable: true
+          maxLength: 100
+        is_active:
+          type: boolean
+        is_email_verified:
+          type: boolean
+      required:
+      - email
+      - first_name
+      - last_name
+    UserProfile:
+      type: object
+      description: Serializer for UserProfile model.
+      properties:
+        user:
+          type: string
+          format: uuid
+        school:
+          type: string
+          format: uuid
+          nullable: true
+        student_id:
+          type: string
+          nullable: true
+          maxLength: 20
+        enrollment_date:
+          type: string
+          format: date
+          nullable: true
+        graduation_date:
+          type: string
+          format: date
+          nullable: true
+        employee_id:
+          type: string
+          nullable: true
+          maxLength: 20
+        hire_date:
+          type: string
+          format: date
+          nullable: true
+        subjects: {}
+        qualifications:
+          type: string
+          nullable: true
+        current_year:
+          type: string
+          nullable: true
+          maxLength: 20
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          nullable: true
+        emergency_contact_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        emergency_contact_phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        emergency_contact_relationship:
+          type: string
+          nullable: true
+          maxLength: 50
+        preferred_learning_style:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PreferredLearningStyleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        twitter_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - updated_at
+      - user
+    UserProfileRequest:
+      type: object
+      description: Serializer for UserProfile model.
+      properties:
+        user:
+          type: string
+          format: uuid
+        school:
+          type: string
+          format: uuid
+          nullable: true
+        student_id:
+          type: string
+          nullable: true
+          maxLength: 20
+        enrollment_date:
+          type: string
+          format: date
+          nullable: true
+        graduation_date:
+          type: string
+          format: date
+          nullable: true
+        employee_id:
+          type: string
+          nullable: true
+          maxLength: 20
+        hire_date:
+          type: string
+          format: date
+          nullable: true
+        subjects: {}
+        qualifications:
+          type: string
+          nullable: true
+        current_year:
+          type: string
+          nullable: true
+          maxLength: 20
+        gpa:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,2}(?:\.\d{0,2})?$
+          nullable: true
+        emergency_contact_name:
+          type: string
+          nullable: true
+          maxLength: 100
+        emergency_contact_phone:
+          type: string
+          nullable: true
+          maxLength: 20
+        emergency_contact_relationship:
+          type: string
+          nullable: true
+          maxLength: 50
+        preferred_learning_style:
+          nullable: true
+          oneOf:
+          - $ref: '#/components/schemas/PreferredLearningStyleEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+          - $ref: '#/components/schemas/NullEnum'
+        linkedin_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        twitter_url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+      required:
+      - user
+    UserRegistration:
+      type: object
+      description: Serializer for user registration.
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        first_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        school_id:
+          type: string
+          nullable: true
+          pattern: ^[A-Z0-9]{4,20}$
+          maxLength: 20
+      required:
+      - email
+      - first_name
+      - last_name
+    UserRegistrationRequest:
+      type: object
+      description: Serializer for user registration.
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        password_confirm:
+          type: string
+          writeOnly: true
+          minLength: 1
+        first_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        last_name:
+          type: string
+          minLength: 1
+          maxLength: 30
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        school_id:
+          type: string
+          nullable: true
+          pattern: ^[A-Z0-9]{4,20}$
+          maxLength: 20
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+      - password_confirm
+    UserSession:
+      type: object
+      description: Serializer for UserSession model.
+      properties:
+        user:
+          type: string
+          format: uuid
+        user_email:
+          type: string
+          readOnly: true
+        session_key:
+          type: string
+          maxLength: 40
+        ip_address:
+          type: string
+        user_agent:
+          type: string
+        browser:
+          type: string
+          nullable: true
+          maxLength: 100
+        operating_system:
+          type: string
+          nullable: true
+          maxLength: 100
+        device_type:
+          type: string
+          nullable: true
+          maxLength: 50
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_activity:
+          type: string
+          format: date-time
+          readOnly: true
+        expires_at:
+          type: string
+          format: date-time
+      required:
+      - created_at
+      - expires_at
+      - ip_address
+      - last_activity
+      - session_key
+      - user
+      - user_agent
+      - user_email
+    UserSessionRequest:
+      type: object
+      description: Serializer for UserSession model.
+      properties:
+        user:
+          type: string
+          format: uuid
+        session_key:
+          type: string
+          minLength: 1
+          maxLength: 40
+        ip_address:
+          type: string
+          minLength: 1
+        user_agent:
+          type: string
+          minLength: 1
+        browser:
+          type: string
+          nullable: true
+          maxLength: 100
+        operating_system:
+          type: string
+          nullable: true
+          maxLength: 100
+        device_type:
+          type: string
+          nullable: true
+          maxLength: 50
+        is_active:
+          type: boolean
+        expires_at:
+          type: string
+          format: date-time
+      required:
+      - expires_at
+      - ip_address
+      - session_key
+      - user
+      - user_agent
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+tags:
+- name: Authentication
+  description: User authentication and authorization
+- name: Users
+  description: User management
+- name: Courses
+  description: Course management
+- name: Tests
+  description: Test and quiz management
+- name: Badges
+  description: Badge and achievement system
+- name: Notifications
+  description: Notification management
+- name: Payments
+  description: Payment processing
+- name: Certifications
+  description: Certificate management
+- name: Analytics
+  description: Analytics and reporting

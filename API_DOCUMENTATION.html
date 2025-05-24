@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convade LMS API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292f;
+            background-color: #ffffff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: #f6f8fa;
+            border-bottom: 1px solid #d1d9e0;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #0969da;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #656d76;
+            margin-bottom: 1rem;
+        }
+
+        .nav {
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav h3 {
+            margin-bottom: 1rem;
+            color: #24292f;
+            font-size: 1.1rem;
+        }
+
+        .nav ul {
+            list-style: none;
+        }
+
+        .nav li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav a {
+            color: #0969da;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: block;
+            transition: background-color 0.2s;
+        }
+
+        .nav a:hover {
+            background-color: #f6f8fa;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        main {
+            min-height: 100vh;
+        }
+
+        section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 100px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #24292f;
+            border-bottom: 1px solid #d1d9e0;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            color: #24292f;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem 0;
+            color: #24292f;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: #656d76;
+        }
+
+        .endpoint {
+            background: #f6f8fa;
+            border: 1px solid #d1d9e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .method {
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .method.get { background: #dafbe1; color: #0969da; }
+        .method.post { background: #fff8dc; color: #bf8700; }
+        .method.put { background: #ffd8cc; color: #c4432b; }
+        .method.patch { background: #ffd8cc; color: #c4432b; }
+        .method.delete { background: #ffebe9; color: #cf222e; }
+
+        .endpoint-url {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 1.1rem;
+            color: #24292f;
+            font-weight: 600;
+        }
+
+        .code-block {
+            background: #f6f8fa;
+            border: 1px solid #d1d9e0;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.875rem;
+            line-height: 1.45;
+            color: #24292f;
+        }
+
+        .code-tabs {
+            display: flex;
+            border-bottom: 1px solid #d1d9e0;
+            margin-bottom: 1rem;
+        }
+
+        .code-tab {
+            padding: 0.5rem 1rem;
+            background: #f6f8fa;
+            border: 1px solid #d1d9e0;
+            border-bottom: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #656d76;
+        }
+
+        .code-tab.active {
+            background: #ffffff;
+            color: #24292f;
+            font-weight: 600;
+        }
+
+        .code-content {
+            display: none;
+        }
+
+        .code-content.active {
+            display: block;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: #ffffff;
+            border: 1px solid #d1d9e0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #d1d9e0;
+        }
+
+        .table th {
+            background: #f6f8fa;
+            font-weight: 600;
+            color: #24292f;
+        }
+
+        .table td code {
+            background: #f6f8fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 0.85rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-left: 4px solid;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .alert.info {
+            background: #dbeafe;
+            border-color: #3b82f6;
+            color: #1e40af;
+        }
+
+        .alert.warning {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .alert.success {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h1>🎓 Convade LMS API Documentation</h1>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="/" style="color: #0969da; text-decoration: none; padding: 0.5rem 1rem; border: 1px solid #0969da; border-radius: 4px; font-size: 0.9rem;">← Back to Home</a>
+                    <a href="/api/docs/" style="color: #0969da; text-decoration: none; padding: 0.5rem 1rem; border: 1px solid #0969da; border-radius: 4px; font-size: 0.9rem;">Swagger UI</a>
+                </div>
+            </div>
+            <p class="subtitle">Complete API reference for integrating with the Convade Learning Management System</p>
+            <p>Base URL: <code>/api</code> (Current Server) | <code>https://your-domain.com/api</code> (Production)</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="content">
+            <nav class="nav">
+                <h3>📚 Table of Contents</h3>
+                <ul>
+                    <li><a href="#getting-started">Getting Started</a></li>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#accounts">👤 Account Management</a></li>
+                    <li><a href="#courses">📖 Course Management</a></li>
+                    <li><a href="#tests">📝 Testing System</a></li>
+                    <li><a href="#social-auth">🔗 Social Authentication</a></li>
+                    <li><a href="#error-handling">⚠️ Error Handling</a></li>
+                    <li><a href="#examples">💡 Complete Examples</a></li>
+                </ul>
+            </nav>
+
+            <main>
+                <section id="getting-started">
+                    <h2>🚀 Getting Started</h2>
+                    <p>Welcome to the Convade LMS API! This RESTful API allows you to integrate your frontend applications with our comprehensive learning management system.</p>
+                    
+                    <div class="alert info">
+                        <strong>💡 Quick Start:</strong> All API endpoints require authentication except for registration and login. Make sure to include the JWT token in your requests.
+                    </div>
+
+                    <h3>Base URLs</h3>
+                    <ul>
+                        <li><strong>Development:</strong> <code>/api</code> (Current Server)</li>
+                        <li><strong>Production:</strong> <code>https://your-domain.com/api</code></li>
+                    </ul>
+
+                    <h3>Interactive Documentation</h3>
+                    <ul>
+                        <li><strong>Swagger UI:</strong> <a href="/api/docs/" target="_blank"><code>/api/docs/</code></a></li>
+                        <li><strong>ReDoc:</strong> <a href="/api/redoc/" target="_blank"><code>/api/redoc/</code></a></li>
+                        <li><strong>OpenAPI Schema:</strong> <a href="/api/schema/" target="_blank"><code>/api/schema/</code></a></li>
+                    </ul>
+                </section>
+
+                <section id="authentication">
+                    <h2>🔐 Authentication</h2>
+                    <p>The API uses JWT (JSON Web Tokens) for authentication. Include the token in the Authorization header for all authenticated requests.</p>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="endpoint-url">/accounts/auth/login/</span>
+                        </div>
+                        <p>Authenticate a user and receive JWT tokens.</p>
+
+                        <h4>📥 Request Body</h4>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Type</th>
+                                    <th>Required</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>email</code></td>
+                                    <td>string</td>
+                                    <td>✅</td>
+                                    <td>User's email address</td>
+                                </tr>
+                                <tr>
+                                    <td><code>password</code></td>
+                                    <td>string</td>
+                                    <td>✅</td>
+                                    <td>User's password</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="code-tabs">
+                            <button class="code-tab active" onclick="showTab(event, 'login-axios')">Axios</button>
+                            <button class="code-tab" onclick="showTab(event, 'login-fetch')">Fetch API</button>
+                        </div>
+
+                        <div id="login-axios" class="code-content active">
+                            <div class="code-block">
+                                <pre>
+import axios from 'axios';
+
+const login = async (email, password) => {
+  try {
+    const response = await axios.post('http://127.0.0.1:8001/api/accounts/auth/login/', {
+      email: email,
+      password: password
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    
+    // Store tokens
+    localStorage.setItem('access_token', response.data.access);
+    localStorage.setItem('refresh_token', response.data.refresh);
+    
+    return response.data;
+  } catch (error) {
+    console.error('Login failed:', error.response?.data);
+    throw error;
+  }
+};
+
+// Example usage
+login('user@example.com', 'password123')
+  .then(data => console.log('Login successful:', data))
+  .catch(error => console.error('Login error:', error));
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div id="login-fetch" class="code-content">
+                            <div class="code-block">
+                                <pre>
+const login = async (email, password) => {
+  try {
+    const response = await fetch('http://127.0.0.1:8001/api/accounts/auth/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Store tokens
+    localStorage.setItem('access_token', data.access);
+    localStorage.setItem('refresh_token', data.refresh);
+    
+    return data;
+  } catch (error) {
+    console.error('Login failed:', error);
+    throw error;
+  }
+};
+
+// Example usage
+login('user@example.com', 'password123')
+  .then(data => console.log('Login successful:', data))
+  .catch(error => console.error('Login error:', error));
+                                </pre>
+                            </div>
+                        </div>
+
+                        <h4>📤 Response</h4>
+                        <div class="code-block">
+                            <pre>
+{
+  "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "user": {
+    "id": "uuid",
+    "email": "user@example.com",
+    "first_name": "John",
+    "last_name": "Doe",
+    "role": "student"
+  }
+}
+                            </pre>
+                        </div>
+                    </div>
+
+                    <h3>🔄 Using JWT Tokens</h3>
+                    <p>Include the access token in the Authorization header for all authenticated requests:</p>
+
+                    <div class="code-tabs">
+                        <button class="code-tab active" onclick="showTab(event, 'auth-axios')">Axios</button>
+                        <button class="code-tab" onclick="showTab(event, 'auth-fetch')">Fetch API</button>
+                    </div>
+
+                    <div id="auth-axios" class="code-content active">
+                        <div class="code-block">
+                            <pre>
+// Set up axios defaults
+const token = localStorage.getItem('access_token');
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+// Or for individual requests
+const response = await axios.get('/api/accounts/profile/', {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div id="auth-fetch" class="code-content">
+                        <div class="code-block">
+                            <pre>
+const token = localStorage.getItem('access_token');
+
+const response = await fetch('http://127.0.0.1:8001/api/accounts/profile/', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }
+});
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="accounts">
+                    <h2>👤 Account Management</h2>
+                    <p>Manage user accounts, authentication, invitations, and registration codes.</p>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="endpoint-url">/accounts/auth/register/invitation/</span>
+                        </div>
+                        <p>Register a new user using an invitation token.</p>
+
+                        <div class="code-tabs">
+                            <button class="code-tab active" onclick="showTab(event, 'register-axios')">Axios</button>
+                            <button class="code-tab" onclick="showTab(event, 'register-fetch')">Fetch API</button>
+                        </div>
+
+                        <div id="register-axios" class="code-content active">
+                            <div class="code-block">
+                                <pre>
+const registerWithInvitation = async (invitationToken, userData) => {
+  try {
+    const response = await axios.post('/api/accounts/auth/register/invitation/', {
+      invitation_token: invitationToken,
+      email: userData.email,
+      password: userData.password,
+      password_confirm: userData.passwordConfirm,
+      first_name: userData.firstName,
+      last_name: userData.lastName
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Registration failed:', error.response?.data);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div id="register-fetch" class="code-content">
+                            <div class="code-block">
+                                <pre>
+const registerWithInvitation = async (invitationToken, userData) => {
+  try {
+    const response = await fetch('/api/accounts/auth/register/invitation/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        invitation_token: invitationToken,
+        email: userData.email,
+        password: userData.password,
+        password_confirm: userData.passwordConfirm,
+        first_name: userData.firstName,
+        last_name: userData.lastName
+      })
+    });
+    
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    
+    return data;
+  } catch (error) {
+    console.error('Registration failed:', error);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="endpoint-url">/accounts/profile/</span>
+                        </div>
+                        <p>Get the current user's profile information.</p>
+
+                        <div class="code-tabs">
+                            <button class="code-tab active" onclick="showTab(event, 'profile-axios')">Axios</button>
+                            <button class="code-tab" onclick="showTab(event, 'profile-fetch')">Fetch API</button>
+                        </div>
+
+                        <div id="profile-axios" class="code-content active">
+                            <div class="code-block">
+                                <pre>
+const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await axios.get('/api/accounts/profile/', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Failed to get profile:', error.response?.data);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div id="profile-fetch" class="code-content">
+                            <div class="code-block">
+                                <pre>
+const getCurrentUser = async () => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('/api/accounts/profile/', {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    
+    return data;
+  } catch (error) {
+    console.error('Failed to get profile:', error);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>📋 Other Account Endpoints</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method post">POST</span></td>
+                                <td><code>/accounts/auth/logout/</code></td>
+                                <td>Logout and invalidate tokens</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method post">POST</span></td>
+                                <td><code>/accounts/auth/change-password/</code></td>
+                                <td>Change user password</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/accounts/users/</code></td>
+                                <td>List all users (admin only)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method post">POST</span></td>
+                                <td><code>/accounts/invitations/</code></td>
+                                <td>Create new invitation</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/accounts/schools/</code></td>
+                                <td>List schools</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="courses">
+                    <h2>📖 Course Management</h2>
+                    <p>Manage courses, categories, modules, lessons, and enrollments.</p>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="endpoint-url">/courses/courses/</span>
+                        </div>
+                        <p>Get list of all courses with pagination and filtering.</p>
+
+                        <div class="code-tabs">
+                            <button class="code-tab active" onclick="showTab(event, 'courses-axios')">Axios</button>
+                            <button class="code-tab" onclick="showTab(event, 'courses-fetch')">Fetch API</button>
+                        </div>
+
+                        <div id="courses-axios" class="code-content active">
+                            <div class="code-block">
+                                <pre>
+const getCourses = async (filters = {}) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const params = new URLSearchParams();
+    
+    // Add filters
+    if (filters.category) params.append('category', filters.category);
+    if (filters.search) params.append('search', filters.search);
+    if (filters.page) params.append('page', filters.page);
+    
+    const response = await axios.get(`/api/courses/courses/?${params}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Failed to get courses:', error.response?.data);
+    throw error;
+  }
+};
+
+// Usage examples
+getCourses({ category: 'programming', search: 'javascript' });
+getCourses({ page: 2 });
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div id="courses-fetch" class="code-content">
+                            <div class="code-block">
+                                <pre>
+const getCourses = async (filters = {}) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const params = new URLSearchParams();
+    
+    // Add filters
+    if (filters.category) params.append('category', filters.category);
+    if (filters.search) params.append('search', filters.search);
+    if (filters.page) params.append('page', filters.page);
+    
+    const response = await fetch(`/api/courses/courses/?${params}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    
+    return data;
+  } catch (error) {
+    console.error('Failed to get courses:', error);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="endpoint-url">/courses/enrollments/</span>
+                        </div>
+                        <p>Enroll a student in a course.</p>
+
+                        <div class="code-tabs">
+                            <button class="code-tab active" onclick="showTab(event, 'enroll-axios')">Axios</button>
+                            <button class="code-tab" onclick="showTab(event, 'enroll-fetch')">Fetch API</button>
+                        </div>
+
+                        <div id="enroll-axios" class="code-content active">
+                            <div class="code-block">
+                                <pre>
+const enrollInCourse = async (courseId) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await axios.post('/api/courses/enrollments/', {
+      course: courseId
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Enrollment failed:', error.response?.data);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div id="enroll-fetch" class="code-content">
+                            <div class="code-block">
+                                <pre>
+const enrollInCourse = async (courseId) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('/api/courses/enrollments/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        course: courseId
+      })
+    });
+    
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    
+    return data;
+  } catch (error) {
+    console.error('Enrollment failed:', error);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>📋 Course Endpoints</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/courses/categories/</code></td>
+                                <td>List course categories</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/courses/courses/{id}/</code></td>
+                                <td>Get specific course details</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/courses/modules/</code></td>
+                                <td>List course modules</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/courses/lessons/</code></td>
+                                <td>List lessons</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/courses/announcements/</code></td>
+                                <td>List course announcements</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="tests">
+                    <h2>📝 Testing System</h2>
+                    <p>Manage tests, questions, attempts, and results.</p>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <span class="endpoint-url">/tests/attempts/</span>
+                        </div>
+                        <p>Start a new test attempt.</p>
+
+                        <div class="code-tabs">
+                            <button class="code-tab active" onclick="showTab(event, 'test-attempt-axios')">Axios</button>
+                            <button class="code-tab" onclick="showTab(event, 'test-attempt-fetch')">Fetch API</button>
+                        </div>
+
+                        <div id="test-attempt-axios" class="code-content active">
+                            <div class="code-block">
+                                <pre>
+const startTestAttempt = async (testId) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await axios.post('/api/tests/attempts/', {
+      test: testId
+    }, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Failed to start test:', error.response?.data);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+
+                        <div id="test-attempt-fetch" class="code-content">
+                            <div class="code-block">
+                                <pre>
+const startTestAttempt = async (testId) => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const response = await fetch('/api/tests/attempts/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        test: testId
+      })
+    });
+    
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.message);
+    
+    return data;
+  } catch (error) {
+    console.error('Failed to start test:', error);
+    throw error;
+  }
+};
+                                </pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>📋 Testing Endpoints</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Endpoint</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/tests/tests/</code></td>
+                                <td>List available tests</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/tests/questions/</code></td>
+                                <td>List test questions</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/tests/results/</code></td>
+                                <td>Get test results</td>
+                            </tr>
+                            <tr>
+                                <td><span class="method get">GET</span></td>
+                                <td><code>/tests/question-banks/</code></td>
+                                <td>List question banks</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="social-auth">
+                    <h2>🔗 Social Authentication</h2>
+                    <p>Integration with Google OAuth and other social providers.</p>
+
+                    <div class="alert info">
+                        <strong>📝 Note:</strong> Social authentication endpoints are available at <code>/auth/</code> and <code>/api/auth/</code>. Refer to the Google OAuth setup documentation for detailed configuration.
+                    </div>
+
+                    <div class="endpoint">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <span class="endpoint-url">/auth/login/google-oauth2/</span>
+                        </div>
+                        <p>Initiate Google OAuth login process.</p>
+
+                        <div class="code-block">
+                            <pre>
+// Redirect to Google OAuth
+window.location.href = 'http://127.0.0.1:8001/auth/login/google-oauth2/';
+
+// Handle callback in your frontend
+const handleGoogleCallback = (code, state) => {
+  // Process the OAuth callback
+  // The backend will handle token exchange
+};
+                            </pre>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="error-handling">
+                    <h2>⚠️ Error Handling</h2>
+                    <p>Proper error handling is crucial for a good user experience. Here's how to handle common error scenarios:</p>
+
+                    <h3>🔄 Token Refresh</h3>
+                    <div class="code-tabs">
+                        <button class="code-tab active" onclick="showTab(event, 'refresh-axios')">Axios</button>
+                        <button class="code-tab" onclick="showTab(event, 'refresh-fetch')">Fetch API</button>
+                    </div>
+
+                    <div id="refresh-axios" class="code-content active">
+                        <div class="code-block">
+                            <pre>
+// Axios interceptor for automatic token refresh
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      try {
+        const refreshToken = localStorage.getItem('refresh_token');
+        const response = await axios.post('/api/accounts/refresh/', {
+          refresh: refreshToken
+        });
+        
+        const { access } = response.data;
+        localStorage.setItem('access_token', access);
+        
+        // Retry original request
+        error.config.headers.Authorization = `Bearer ${access}`;
+        return axios.request(error.config);
+      } catch (refreshError) {
+        // Refresh failed, redirect to login
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+                            </pre>
+                        </div>
+                    </div>
+
+                    <div id="refresh-fetch" class="code-content">
+                        <div class="code-block">
+                            <pre>
+const refreshToken = async () => {
+  try {
+    const refresh = localStorage.getItem('refresh_token');
+    const response = await fetch('/api/accounts/refresh/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ refresh })
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('access_token', data.access);
+      return data.access;
+    } else {
+      throw new Error('Token refresh failed');
+    }
+  } catch (error) {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    window.location.href = '/login';
+  }
+};
+
+const apiCall = async (url, options = {}) => {
+  let token = localStorage.getItem('access_token');
+  
+  let response = await fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  if (response.status === 401) {
+    token = await refreshToken();
+    response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  }
+  
+  return response;
+};
+                            </pre>
+                        </div>
+                    </div>
+
+                    <h3>📋 Common HTTP Status Codes</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Status Code</th>
+                                <th>Meaning</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>200</code></td>
+                                <td>Success</td>
+                                <td>Request completed successfully</td>
+                            </tr>
+                            <tr>
+                                <td><code>201</code></td>
+                                <td>Created</td>
+                                <td>Resource created successfully</td>
+                            </tr>
+                            <tr>
+                                <td><code>400</code></td>
+                                <td>Bad Request</td>
+                                <td>Check request parameters</td>
+                            </tr>
+                            <tr>
+                                <td><code>401</code></td>
+                                <td>Unauthorized</td>
+                                <td>Refresh token or redirect to login</td>
+                            </tr>
+                            <tr>
+                                <td><code>403</code></td>
+                                <td>Forbidden</td>
+                                <td>User lacks permission</td>
+                            </tr>
+                            <tr>
+                                <td><code>404</code></td>
+                                <td>Not Found</td>
+                                <td>Resource doesn't exist</td>
+                            </tr>
+                            <tr>
+                                <td><code>500</code></td>
+                                <td>Server Error</td>
+                                <td>Contact system administrator</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section id="examples">
+                    <h2>💡 Complete Examples</h2>
+                    <p>Here are complete examples showing common integration patterns:</p>
+
+                    <h3>🎯 React Login Component</h3>
+                    <div class="code-block">
+                        <pre>
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const LoginForm = ({ onLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post('http://127.0.0.1:8001/api/accounts/auth/login/', {
+        email,
+        password
+      });
+
+      localStorage.setItem('access_token', response.data.access);
+      localStorage.setItem('refresh_token', response.data.refresh);
+      
+      onLogin(response.data.user);
+    } catch (error) {
+      setError(error.response?.data?.detail || 'Login failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      {error && &lt;div className="error"&gt;{error}&lt;/div&gt;}
+      
+      &lt;input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      /&gt;
+      
+      &lt;input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      /&gt;
+      
+      &lt;button type="submit" disabled={loading}&gt;
+        {loading ? 'Logging in...' : 'Login'}
+      &lt;/button&gt;
+    &lt;/form&gt;
+  );
+};
+                        </pre>
+                    </div>
+
+                    <h3>🎯 Vue.js Course List Component</h3>
+                    <div class="code-block">
+                        <pre>
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;div v-if="loading"&gt;Loading courses...&lt;/div&gt;
+    &lt;div v-else&gt;
+      &lt;div v-for="course in courses" :key="course.id" class="course-card"&gt;
+        &lt;h3&gt;{{ course.title }}&lt;/h3&gt;
+        &lt;p&gt;{{ course.description }}&lt;/p&gt;
+        &lt;button @click="enrollInCourse(course.id)"&gt;Enroll&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      courses: [],
+      loading: true
+    };
+  },
+  
+  async mounted() {
+    await this.fetchCourses();
+  },
+  
+  methods: {
+    async fetchCourses() {
+      try {
+        const token = localStorage.getItem('access_token');
+        const response = await axios.get('/api/courses/courses/', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        this.courses = response.data.results;
+      } catch (error) {
+        console.error('Failed to fetch courses:', error);
+      } finally {
+        this.loading = false;
+      }
+    },
+    
+    async enrollInCourse(courseId) {
+      try {
+        const token = localStorage.getItem('access_token');
+        await axios.post('/api/courses/enrollments/', {
+          course: courseId
+        }, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        alert('Successfully enrolled!');
+      } catch (error) {
+        alert('Enrollment failed: ' + error.response?.data?.detail);
+      }
+    }
+  }
+};
+&lt;/script&gt;
+                        </pre>
+                    </div>
+
+                    <div class="alert success">
+                        <strong>🎉 Congratulations!</strong> You now have all the information needed to integrate with the Convade LMS API. For more detailed information, check out the interactive documentation at <code>/api/docs/</code>.
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        function showTab(event, tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.code-content');
+            contents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = event.target.parentNode.querySelectorAll('.code-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content and mark tab as active
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

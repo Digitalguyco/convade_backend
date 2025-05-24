@@ -1,0 +1,26 @@
+services:
+  # Web Service
+  - type: web
+    name: convade-lms
+    env: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn convade_backend.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DJANGO_SETTINGS_MODULE
+        value: convade_backend.settings.production
+      - key: WEB_CONCURRENCY
+        value: 4
+    autoDeploy: false
+
+databases:
+  # PostgreSQL Database
+  - name: convade-db
+    plan: free
+    databaseName: convade_production
+    user: convade_user
+
+# Redis is not available in free tier, but we can use database caching
+# or upgrade to starter plan ($7/month) for Redis 

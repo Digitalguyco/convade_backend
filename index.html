@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convade LMS - API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .doc-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .doc-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        .server-status {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 2rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .footer {
+            margin-top: 3rem;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .quick-links {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .quick-links a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .quick-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .docs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Convade LMS</h1>
+        <p class="subtitle">
+            Complete API Documentation for Learning Management System Integration
+        </p>
+
+        <div class="docs-grid">
+            <a href="/docs/api/" class="doc-card">
+                <h3><span class="icon">📚</span> API Documentation</h3>
+                <p>Comprehensive API reference with code examples for Axios and Fetch API. Includes authentication, error handling, and real-world integration examples.</p>
+            </a>
+
+            <a href="/api/docs/" class="doc-card">
+                <h3><span class="icon">🔧</span> Interactive Swagger UI</h3>
+                <p>Live API explorer where you can test endpoints directly. Perfect for development and debugging API calls.</p>
+            </a>
+
+            <a href="/api/redoc/" class="doc-card">
+                <h3><span class="icon">📖</span> ReDoc Documentation</h3>
+                <p>Alternative interactive documentation with a clean, modern interface. Great for browsing the API structure.</p>
+            </a>
+
+            <a href="/api/schema/" class="doc-card">
+                <h3><span class="icon">🔍</span> OpenAPI Schema</h3>
+                <p>Raw API schema in OpenAPI 3.0 format. Use this for code generation and automated testing tools.</p>
+            </a>
+        </div>
+
+        <div class="quick-links">
+            <h3 style="margin-bottom: 1rem;">📋 Quick Links</h3>
+            <a href="/docs/setup/">Setup Guide</a>
+            <a href="/admin/">Django Admin</a>
+            <a href="/api/accounts/auth/login/">Login API</a>
+            <a href="/api/courses/courses/">Courses API</a>
+        </div>
+
+        <div class="server-status">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span>Development Server Status</span>
+            </div>
+            <p>Expected server: <strong>http://127.0.0.1:8001</strong></p>
+            <p>Start with: <code>cd convade_backend && python manage.py runserver 8001</code></p>
+        </div>
+
+        <div class="footer">
+            <p>🚀 Built with Django REST Framework | 🔐 JWT Authentication | 📱 Mobile Ready</p>
+            <p>Phase 2 Complete - Ready for Frontend Integration</p>
+        </div>
+    </div>
+
+    <script>
+        // Check if server is running by testing current domain
+        async function checkServerStatus() {
+            try {
+                const response = await fetch('/api/schema/', { method: 'HEAD' });
+                if (response.ok) {
+                    document.querySelector('.status-dot').style.background = '#4ade80';
+                    document.querySelector('.status-indicator span').textContent = 'Server Online';
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                document.querySelector('.status-dot').style.background = '#ef4444';
+                document.querySelector('.status-indicator span').textContent = 'Server Offline';
+            }
+        }
+
+        // Check server status on load
+        checkServerStatus();
+        
+        // Recheck server status every 30 seconds
+        setInterval(checkServerStatus, 30000);
+    </script>
+</body>
+</html> 
