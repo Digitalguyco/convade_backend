@@ -10,7 +10,7 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DJANGO_SETTINGS_MODULE
-        value: convade_backend.settings.production
+        value: convade_backend.convade_backend.settings.production
       - key: WEB_CONCURRENCY
         value: 4
     autoDeploy: false
