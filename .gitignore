@@ -114,6 +114,8 @@ __pypackages__/
 
 # Celery stuff
 celerybeat-schedule
+celerybeat-schedule-shm
+celerybeat-schedule-wal
 celerybeat.pid
 celery-broker.db
 celery-results.db
