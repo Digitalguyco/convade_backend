@@ -11,10 +11,13 @@ pip install gunicorn psycopg2-binary whitenoise
 # Set Django settings for build commands
 export DJANGO_SETTINGS_MODULE=convade_backend.settings.production
 
-# Collect static files
-python manage.py collectstatic --noinput
-
 # Run migrations
 python manage.py migrate
+
+# Create cache table for database caching (fallback when Redis is not available)
+python manage.py createcachetable
+
+# Collect static files
+python manage.py collectstatic --noinput
 
 echo "Build completed successfully!" 
